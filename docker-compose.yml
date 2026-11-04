@@ -1,0 +1,17 @@
+name: template-api
+
+services:
+  template_api:
+    image: mysql:8.4
+    container_name: template_api
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: db_template_api
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
