@@ -1,13 +1,13 @@
-package com.github.dionathanpassos.tamplate_start_spring;
+package com.github.dionathanpassos.b3_wallet_api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OrderFlowApiApplication {
+public class B3WalletApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OrderFlowApiApplication.class, args);
+		SpringApplication.run(B3WalletApiApplication.class, args);
 	}
 
 }

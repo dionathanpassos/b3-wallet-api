@@ -1,7 +1,7 @@
-package com.github.dionathanpassos.tamplate_start_spring.domain.user;
+package com.github.dionathanpassos.b3_wallet_api.domain.user;
 
-import com.github.dionathanpassos.tamplate_start_spring.domain.auth.dto.RegisterRequestDTO;
-import com.github.dionathanpassos.tamplate_start_spring.domain.auth.dto.RegisterResponseDTO;
+import com.github.dionathanpassos.b3_wallet_api.domain.auth.dto.RegisterRequestDTO;
+import com.github.dionathanpassos.b3_wallet_api.domain.auth.dto.RegisterResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

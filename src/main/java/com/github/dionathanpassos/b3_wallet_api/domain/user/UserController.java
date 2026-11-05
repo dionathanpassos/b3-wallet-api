@@ -1,4 +1,4 @@
-package com.github.dionathanpassos.tamplate_start_spring.domain.user;
+package com.github.dionathanpassos.b3_wallet_api.domain.user;
 
 public class UserController {
 }

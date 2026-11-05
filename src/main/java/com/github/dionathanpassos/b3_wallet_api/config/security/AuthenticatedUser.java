@@ -1,7 +1,7 @@
-package com.github.dionathanpassos.tamplate_start_spring.config.security;
+package com.github.dionathanpassos.b3_wallet_api.config.security;
 
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.User;
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.UserRepository;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

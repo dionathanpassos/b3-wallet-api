@@ -1,4 +1,4 @@
-package com.github.dionathanpassos.tamplate_start_spring.config.security;
+package com.github.dionathanpassos.b3_wallet_api.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

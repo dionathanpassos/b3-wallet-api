@@ -1,7 +1,7 @@
-package com.github.dionathanpassos.tamplate_start_spring.config.security;
+package com.github.dionathanpassos.b3_wallet_api.config.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.UserRepository;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

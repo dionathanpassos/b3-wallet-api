@@ -1,4 +1,4 @@
-package com.github.dionathanpassos.tamplate_start_spring.exception;
+package com.github.dionathanpassos.b3_wallet_api.exception;
 
 public class InvalidRefreshTokenException extends RuntimeException {
     public InvalidRefreshTokenException(String message) {

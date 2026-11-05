@@ -1,6 +1,6 @@
-package com.github.dionathanpassos.tamplate_start_spring.domain.auth;
+package com.github.dionathanpassos.b3_wallet_api.domain.auth;
 
-import com.github.dionathanpassos.tamplate_start_spring.domain.auth.dto.*;
+import com.github.dionathanpassos.b3_wallet_api.domain.auth.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

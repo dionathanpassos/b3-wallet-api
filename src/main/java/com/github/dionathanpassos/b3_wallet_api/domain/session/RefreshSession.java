@@ -1,6 +1,6 @@
-package com.github.dionathanpassos.tamplate_start_spring.domain.session;
+package com.github.dionathanpassos.b3_wallet_api.domain.session;
 
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.User;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

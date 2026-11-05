@@ -1,15 +1,15 @@
-package com.github.dionathanpassos.tamplate_start_spring.domain.auth;
+package com.github.dionathanpassos.b3_wallet_api.domain.auth;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.github.dionathanpassos.tamplate_start_spring.config.security.TokenService;
-import com.github.dionathanpassos.tamplate_start_spring.domain.auth.dto.*;
-import com.github.dionathanpassos.tamplate_start_spring.domain.session.RefreshSessionService;
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.Role;
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.User;
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.UserMapper;
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.UserRepository;
-import com.github.dionathanpassos.tamplate_start_spring.exception.ConflictException;
-import com.github.dionathanpassos.tamplate_start_spring.exception.InvalidRefreshTokenException;
+import com.github.dionathanpassos.b3_wallet_api.config.security.TokenService;
+import com.github.dionathanpassos.b3_wallet_api.domain.auth.dto.*;
+import com.github.dionathanpassos.b3_wallet_api.domain.session.RefreshSessionService;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.Role;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.UserMapper;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.UserRepository;
+import com.github.dionathanpassos.b3_wallet_api.exception.ConflictException;
+import com.github.dionathanpassos.b3_wallet_api.exception.InvalidRefreshTokenException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;

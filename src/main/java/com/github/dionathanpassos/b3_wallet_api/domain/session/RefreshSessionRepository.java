@@ -1,4 +1,4 @@
-package com.github.dionathanpassos.tamplate_start_spring.domain.session;
+package com.github.dionathanpassos.b3_wallet_api.domain.session;
 
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,6 +1,6 @@
-package com.github.dionathanpassos.tamplate_start_spring.config.security;
+package com.github.dionathanpassos.b3_wallet_api.config.security;
 
-import com.github.dionathanpassos.tamplate_start_spring.exception.ErrorResponse;
+import com.github.dionathanpassos.b3_wallet_api.exception.ErrorResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

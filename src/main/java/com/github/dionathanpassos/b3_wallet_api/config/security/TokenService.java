@@ -1,10 +1,10 @@
-package com.github.dionathanpassos.tamplate_start_spring.config.security;
+package com.github.dionathanpassos.b3_wallet_api.config.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.User;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
@@ -35,7 +35,7 @@ public class TokenService {
                 .withAudience(AUDIENCE)
                 .withClaim("type", "access")
                 .withSubject(user.getId().toString())
-                .withExpiresAt(Instant.now().plus(15, ChronoUnit.MINUTES))
+                .withExpiresAt(Instant.now().plus(7000, ChronoUnit.MINUTES))
                 .sign(algorithm);
 
     }

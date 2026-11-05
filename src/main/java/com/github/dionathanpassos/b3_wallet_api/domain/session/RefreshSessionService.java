@@ -1,10 +1,10 @@
-package com.github.dionathanpassos.tamplate_start_spring.domain.session;
+package com.github.dionathanpassos.b3_wallet_api.domain.session;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.github.dionathanpassos.tamplate_start_spring.config.security.TokenService;
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.User;
-import com.github.dionathanpassos.tamplate_start_spring.domain.user.UserRepository;
-import com.github.dionathanpassos.tamplate_start_spring.exception.InvalidRefreshTokenException;
+import com.github.dionathanpassos.b3_wallet_api.config.security.TokenService;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
+import com.github.dionathanpassos.b3_wallet_api.domain.user.UserRepository;
+import com.github.dionathanpassos.b3_wallet_api.exception.InvalidRefreshTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
