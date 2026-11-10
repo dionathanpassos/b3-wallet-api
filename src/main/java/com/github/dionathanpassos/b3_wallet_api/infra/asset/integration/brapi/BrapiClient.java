@@ -1,10 +1,13 @@
-package com.github.dionathanpassos.b3_wallet_api.infra.integration.brapi;
+package com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi;
 
-import com.github.dionathanpassos.b3_wallet_api.infra.integration.brapi.dto.BrapiAssetResponseDTO;
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetQuoteResponseDTO;
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetResponseDTO;
 import com.github.dionathanpassos.b3_wallet_api.exception.ApiUnavailableException;
 import com.github.dionathanpassos.b3_wallet_api.exception.BrapiIntegrationException;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
@@ -15,18 +18,26 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BrapiClient {
 
+    @Value("${api.key.token.brapi}")
+    String token;
+
     private final RestClient brapiRestClient;
 
-    public Optional<BrapiAssetResponseDTO.BrapiTickerResultDTO> getTicker(String ticker) {
+    public Optional<BrapiAssetQuoteResponseDTO> getTicker(String ticker) {
 
         try {
-            BrapiAssetResponseDTO response = brapiRestClient.get()
-                    .uri("https://brapi.dev/api/v2/tickers?search={ticker}", ticker)
+            BrapiAssetQuoteResponseDTO response = brapiRestClient.get()
+                    .uri("https://brapi.dev/api/v2/stocks/quote?symbols={ticker}", ticker)
+                    .header("Authorization", "Bearer " + token)
+                    .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
-                    .body(BrapiAssetResponseDTO.class);
+                    .onStatus(HttpStatusCode::isError, (req, res) -> {
+                        throw new BrapiIntegrationException("Erro na API Brapi. Status: " + res.getStatusCode());
+                    })
+                    .body(BrapiAssetQuoteResponseDTO.class);
 
             if(response != null && response.results() != null && !response.results().isEmpty()) {
-                return Optional.of(response.results().getFirst());
+                return Optional.of(response);
             }
 
             return Optional.empty();

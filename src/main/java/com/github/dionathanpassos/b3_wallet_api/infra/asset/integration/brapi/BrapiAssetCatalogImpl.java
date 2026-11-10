@@ -1,9 +1,12 @@
-package com.github.dionathanpassos.b3_wallet_api.infra.integration.brapi;
+package com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi;
 
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.AssetType;
-import com.github.dionathanpassos.b3_wallet_api.infra.integration.AssetCatalogProvider;
-import com.github.dionathanpassos.b3_wallet_api.infra.integration.brapi.dto.BrapiAssetResponseDTO;
-import com.github.dionathanpassos.b3_wallet_api.infra.integration.ExternalAssetDTO;
+import com.github.dionathanpassos.b3_wallet_api.exception.BusinessException;
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.AssetCatalogProvider;
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.ExternalAssetQuoteDTO;
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetQuoteResponseDTO;
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetResponseDTO;
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.ExternalAssetDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,22 +21,24 @@ public class BrapiAssetCatalogImpl implements AssetCatalogProvider {
     private final BrapiClient brapiClient;
 
     @Override
-    public Optional<ExternalAssetDTO> findByTicker(String ticker) {
+    public List<ExternalAssetQuoteDTO> findByTicker(String ticker) {
 
-        Optional<BrapiAssetResponseDTO.BrapiTickerResultDTO> response = brapiClient.getTicker(ticker);
+        BrapiAssetQuoteResponseDTO response = brapiClient.getTicker(ticker)
+                .orElseThrow(() -> new BusinessException("Não foi possível obter a cotação do ativo"));
 
-        return response.map( tickerResponse -> new ExternalAssetDTO(
-                tickerResponse.symbol(),
-                tickerResponse.name(),
-                AssetType.valueOf(tickerResponse.subType().toUpperCase()),
-                tickerResponse.exchange(),
-                tickerResponse.currency(),
-                tickerResponse.sector(),
-                tickerResponse.subsector(),
-                tickerResponse.isActive(),
-                tickerResponse.logoUrl()
-            )
-        );
+        return response.results().stream()
+                .map(ticketInfo -> new ExternalAssetQuoteDTO(
+                        ticketInfo.symbol(),
+                        ticketInfo.data().regularMarketPrice(),
+                        ticketInfo.data().regularMarketChange(),
+                        ticketInfo.data().regularMarketChangePercent(),
+                        ticketInfo.data().regularMarketDayHigh(),
+                        ticketInfo.data().regularMarketDayLow(),
+                        ticketInfo.data().regularMarketPreviousClose(),
+                        ticketInfo.data().regularMarketVolume(),
+                        ticketInfo.data().regularMarketTime()
+                        )).toList();
+
     }
 
     @Override

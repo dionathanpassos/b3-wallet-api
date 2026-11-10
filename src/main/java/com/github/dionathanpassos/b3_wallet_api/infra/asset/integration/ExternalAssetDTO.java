@@ -1,4 +1,4 @@
-package com.github.dionathanpassos.b3_wallet_api.infra.integration;
+package com.github.dionathanpassos.b3_wallet_api.infra.asset.integration;
 
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.AssetType;
 
