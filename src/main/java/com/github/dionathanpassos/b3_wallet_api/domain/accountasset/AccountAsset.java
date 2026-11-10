@@ -94,7 +94,7 @@ public class AccountAsset {
         }
 
         Long newQuantity = this.quantity - quantity;
-        BigDecimal newTotalInvested = this.totalInvested.subtract(this.averagePrice.multiply(BigDecimal.valueOf(newQuantity)));
+        BigDecimal newTotalInvested = this.totalInvested.subtract(this.averagePrice.multiply(BigDecimal.valueOf(quantity)));
 
         this.quantity = newQuantity;
         this.totalInvested = newTotalInvested;
