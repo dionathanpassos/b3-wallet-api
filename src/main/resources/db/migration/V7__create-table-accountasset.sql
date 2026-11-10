@@ -1,19 +1,17 @@
-CREATE TABLE tb_transactions (
+CREATE TABLE tb_account_assets (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
     account_id BIGINT NOT NULL,
     asset_id BIGINT NOT NULL,
-    broker_id BIGINT NOT NULL,
-    type VARCHAR(12) NOT NULL,
-    quantity INT NOT NULL,
-    unit_price DECIMAL(15,2) NOT NULL,
-    total_amount DECIMAL(15,2) NOT NULL,
-    transaction_date DATE NOT NULL,
+    quantity BIGINT NOT NULL,
+    average_price DECIMAL(15,2) NOT NULL,
+    total_invested DECIMAL(15,2) NOT NULL,
 
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_transactions_account FOREIGN KEY (account_id) REFERENCES tb_accounts (id),
-    CONSTRAINT fk_transactions_asset FOREIGN KEY (asset_id) REFERENCES tb_assets (id),
-    CONSTRAINT fk_transactions_broker FOREIGN KEY (broker_id) REFERENCES tb_brokers (id)
+    CONSTRAINT fk_account_assets_account FOREIGN KEY (account_id) REFERENCES tb_accounts (id),
+    CONSTRAINT account_assets FOREIGN KEY (asset_id) REFERENCES tb_assets (id),
+
+    CONSTRAINT uq_account_asset UNIQUE (account_id, asset_id)
 );
