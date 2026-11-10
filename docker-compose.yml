@@ -1,12 +1,11 @@
-name: template-api
-
+name: b3-wallet-api
 services:
   template_api:
     image: mysql:8.4
-    container_name: template_api
+    container_name: b3_wallet
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: db_template_api
+      MYSQL_DATABASE: db_b3_wallet_api
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3309:3306"
