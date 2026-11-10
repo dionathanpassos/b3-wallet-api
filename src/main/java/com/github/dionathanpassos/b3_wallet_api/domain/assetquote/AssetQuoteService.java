@@ -1,10 +1,8 @@
-package com.github.dionathanpassos.b3_wallet_api.domain.assetquotes;
+package com.github.dionathanpassos.b3_wallet_api.domain.assetquote;
 
 import com.github.dionathanpassos.b3_wallet_api.domain.accountasset.AccountAsset;
 import com.github.dionathanpassos.b3_wallet_api.domain.accountasset.AccountAssetRepository;
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
-import com.github.dionathanpassos.b3_wallet_api.domain.asset.AssetRepository;
-import com.github.dionathanpassos.b3_wallet_api.exception.ResourceNotFoundException;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.AssetCatalogProvider;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.ExternalAssetQuoteDTO;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +21,9 @@ public class AssetQuoteService {
 
 
 
+
     @Scheduled(cron = "0 0 19 * * MON-FRI", zone = "America/Sao_Paulo")
     public void synchronizeAssetQuotes() {
-        List<AccountAsset> accountAssets = accountAssetRepository.findAll();
-
         List<Asset> assets = accountAssetRepository.findDistinctAssetsWithActivePositions();
 
         assets.forEach(asset -> {

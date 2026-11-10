@@ -1,4 +1,4 @@
-package com.github.dionathanpassos.b3_wallet_api.domain.assetquotes;
+package com.github.dionathanpassos.b3_wallet_api.domain.assetquote;
 
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
 import org.springframework.data.jpa.repository.JpaRepository;

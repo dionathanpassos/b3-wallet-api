@@ -1,4 +1,4 @@
-package com.github.dionathanpassos.b3_wallet_api.domain.assetquotes;
+package com.github.dionathanpassos.b3_wallet_api.domain.assetquote;
 
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
 import jakarta.persistence.*;
@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Digits;
 import lombok.Getter;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.naming.Name;
 import java.math.BigDecimal;
 import java.time.Instant;
 

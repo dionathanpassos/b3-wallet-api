@@ -1,7 +1,8 @@
-package com.github.dionathanpassos.b3_wallet_api.domain.assetquotes;
+package com.github.dionathanpassos.b3_wallet_api.domain.assetquote;
 
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.AssetRepository;
+import com.github.dionathanpassos.b3_wallet_api.domain.assetquotehistory.AssetQuoteHistoryService;
 import com.github.dionathanpassos.b3_wallet_api.exception.ResourceNotFoundException;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.ExternalAssetQuoteDTO;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class AssetQuotePersistenceService {
 
     private final AssetQuoteRepository assetQuoteRepository;
     private final AssetRepository assetRepository;
+    private final AssetQuoteHistoryService assetQuoteHistoryService;
 
     @Transactional
     public void processQuote(ExternalAssetQuoteDTO quote) {
@@ -50,9 +52,9 @@ public class AssetQuotePersistenceService {
                     quote.volume(),
                     quote.quoteTime()
             );
-
             assetQuoteRepository.save(assetQuote);
         }
+        assetQuoteHistoryService.saveQuoteHistory(asset, quote);
     };
 
 }

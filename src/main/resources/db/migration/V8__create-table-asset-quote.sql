@@ -1,17 +1,17 @@
-CREATE TABLE tb_account_assets (
+CREATE TABLE tb_asset_quotes (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    account_id BIGINT NOT NULL,
-    asset_id BIGINT NOT NULL,
-    quantity BIGINT NOT NULL,
-    average_price DECIMAL(15,2) NOT NULL,
-    total_invested DECIMAL(15,2) NOT NULL,
+    asset_id BIGINT NOT NULL UNIQUE,
+    price DECIMAL(19,4) NOT NULL,
+    `change` DECIMAL(19,4) NOT NULL,
+    change_percent DECIMAL(9,4) NOT NULL,
+    day_high DECIMAL(19,4) NOT NULL,
+    day_low DECIMAL(19,4) NOT NULL,
+    previous_close DECIMAL(19,4) NOT NULL,
+    volume BIGINT NOT NULL,
+    quote_time TIMESTAMP NOT NULL,
 
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_account_assets_account FOREIGN KEY (account_id) REFERENCES tb_accounts (id),
-    CONSTRAINT account_assets FOREIGN KEY (asset_id) REFERENCES tb_assets (id),
-
-    CONSTRAINT uq_account_asset UNIQUE (account_id, asset_id)
+    CONSTRAINT fk_asset_quote_assets FOREIGN KEY (asset_id) REFERENCES tb_assets (id)
 );
