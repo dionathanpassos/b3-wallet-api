@@ -3,6 +3,7 @@ package com.github.dionathanpassos.b3_wallet_api.domain.transaction;
 import com.github.dionathanpassos.b3_wallet_api.config.security.AuthenticatedUser;
 import com.github.dionathanpassos.b3_wallet_api.domain.account.Account;
 import com.github.dionathanpassos.b3_wallet_api.domain.account.AccountRepository;
+import com.github.dionathanpassos.b3_wallet_api.domain.account.AccountStatus;
 import com.github.dionathanpassos.b3_wallet_api.domain.accountasset.PositionService;
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.AssetRepository;
@@ -12,6 +13,7 @@ import com.github.dionathanpassos.b3_wallet_api.domain.broker.BrokerRepository;
 import com.github.dionathanpassos.b3_wallet_api.domain.transaction.dto.TransactionRequestDTO;
 import com.github.dionathanpassos.b3_wallet_api.domain.transaction.dto.TransactionResponseDTO;
 import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
+import com.github.dionathanpassos.b3_wallet_api.exception.BusinessException;
 import com.github.dionathanpassos.b3_wallet_api.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,10 @@ public class TransactionService {
 
         Account account = accountRepository.findByIdAndUser(requestDTO.accountId(),user)
                 .orElseThrow(() -> new ResourceNotFoundException("Carteira não encontrada"));
+
+        if (account.getStatus() == AccountStatus.INACTIVE) {
+            throw new BusinessException("Carteira inativa, não é possível realizar movimentações");
+        }
 
         Asset asset = assetRepository.findById(requestDTO.assetId())
                 .orElseThrow(() -> new ResourceNotFoundException("Ativo não encontrado"));
