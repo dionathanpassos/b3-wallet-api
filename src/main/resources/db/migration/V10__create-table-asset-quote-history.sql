@@ -1,17 +1,12 @@
-CREATE TABLE tb_asset_quotes (
+CREATE TABLE tb_asset_quote_history (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    asset_id BIGINT NOT NULL UNIQUE,
+    asset_id BIGINT NOT NULL,
     price DECIMAL(19,4) NOT NULL,
-    `change` DECIMAL(19,4) NOT NULL,
-    change_percent DECIMAL(9,4) NOT NULL,
-    day_high DECIMAL(19,4) NOT NULL,
-    day_low DECIMAL(19,4) NOT NULL,
-    previous_close DECIMAL(19,4) NOT NULL,
-    volume BIGINT NOT NULL,
-    quote_time TIMESTAMP NOT NULL,
+    quote_date DATE NOT NULL,
 
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT fk_asset_quote_assets FOREIGN KEY (asset_id) REFERENCES tb_assets (id)
+    CONSTRAINT fk_asset_quote_history_assets FOREIGN KEY (asset_id) REFERENCES tb_assets (id),
+    CONSTRAINT uk_asset_quote_history_asset_date UNIQUE (asset_id, quote_date)
 );
