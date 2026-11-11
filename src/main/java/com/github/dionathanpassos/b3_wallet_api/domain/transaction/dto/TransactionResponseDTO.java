@@ -10,7 +10,6 @@ public record TransactionResponseDTO(
         Long id,
         Long accountId,
         Long assetId,
-        Long brokerId,
         TransactionType type,
         Long quantity,
         BigDecimal unitPrice,

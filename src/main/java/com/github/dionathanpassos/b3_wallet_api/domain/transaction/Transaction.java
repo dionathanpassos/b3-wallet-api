@@ -2,7 +2,6 @@ package com.github.dionathanpassos.b3_wallet_api.domain.transaction;
 
 import com.github.dionathanpassos.b3_wallet_api.domain.account.Account;
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
-import com.github.dionathanpassos.b3_wallet_api.domain.broker.Broker;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,10 +27,6 @@ public class Transaction {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "asset_id", nullable = false)
     private Asset asset;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "broker_id", nullable = false)
-    private Broker broker;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "transaction_type", nullable = false)
@@ -62,7 +57,6 @@ public class Transaction {
     public static Transaction create(
             Account account,
             Asset asset,
-            Broker broker,
             TransactionType type,
             Long quantity,
             BigDecimal unitPrice,
@@ -73,7 +67,6 @@ public class Transaction {
 
         transaction.account = account;
         transaction.asset = asset;
-        transaction.broker = broker;
         transaction.type = type;
         transaction.quantity = quantity;
         transaction.unitPrice = unitPrice;

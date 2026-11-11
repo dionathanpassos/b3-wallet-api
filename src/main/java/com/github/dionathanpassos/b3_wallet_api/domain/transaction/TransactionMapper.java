@@ -9,6 +9,5 @@ public interface TransactionMapper {
 
     @Mapping(target = "accountId", source = "account.id")
     @Mapping(target = "assetId", source = "asset.id")
-    @Mapping(target = "brokerId", source = "broker.id")
     TransactionResponseDTO fromEntity(Transaction transaction);
 }

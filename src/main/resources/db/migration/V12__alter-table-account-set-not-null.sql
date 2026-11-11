@@ -1,2 +1,2 @@
 ALTER TABLE tb_accounts
-ADD COLUMN broker_id BIGINT;
+MODIFY COLUMN broker_id BIGINT NOT NULL;

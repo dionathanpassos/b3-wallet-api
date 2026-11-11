@@ -17,9 +17,6 @@ public record TransactionRequestDTO(
         @NotNull(message = "O ativo é obridatório")
         Long assetId,
 
-        @NotNull(message = "A corretora é obridatória")
-        Long brokerId,
-
         @NotNull(message = "O tipo da transação é obridatório")
         TransactionType type,
 

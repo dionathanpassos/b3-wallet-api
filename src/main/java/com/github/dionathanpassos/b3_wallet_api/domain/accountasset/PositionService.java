@@ -6,6 +6,7 @@ import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
 import com.github.dionathanpassos.b3_wallet_api.domain.transaction.Transaction;
 import com.github.dionathanpassos.b3_wallet_api.domain.transaction.TransactionType;
 import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
+import com.github.dionathanpassos.b3_wallet_api.exception.BusinessException;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.AssetCatalogProvider;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.ExternalAssetQuoteDTO;
 import jakarta.persistence.Entity;
@@ -33,22 +34,46 @@ public class PositionService {
 
         User user = getCurrentUser();
 
+        if (transaction.getType() == TransactionType.BUYING) {
+            processBuy(transaction, user);
+        } else if (transaction.getType() == TransactionType.SELLING) {
+            processSell(transaction, user);
+        }
+    }
+
+    private void processBuy(Transaction transaction, User user) {
+
         AccountAsset position = accountAssetRepository.findByAccountAndAssetAndAccountUserId(
                 transaction.getAccount(),
                 transaction.getAsset(),
                 user.getId()
-        ).orElseGet(
-                () -> AccountAsset.create(
+        ).orElseGet(() ->
+                AccountAsset.create(
                         transaction.getAccount(),
                         transaction.getAsset()
                 )
         );
 
-        position.applyPosition(
-                transaction.getType(),
-                transaction.getQuantity(),
-                transaction.getTotalAmount()
+        position.applyBuy(
+                transaction.getTotalAmount(),
+                transaction.getQuantity()
         );
+        accountAssetRepository.save(position);
+
+    }
+
+    private void processSell(Transaction transaction, User user) {
+
+        //futuramente precisaremos de um lock pessimista
+        AccountAsset position = accountAssetRepository.findByAccountAndAssetAndAccountUserId(
+                transaction.getAccount(),
+                transaction.getAsset(),
+                user.getId()
+        ).orElseThrow(() ->
+                new BusinessException("Não existe posição deste ativo nesta carteira")
+        );
+
+        position.applySell(transaction.getQuantity());
         accountAssetRepository.save(position);
     }
 

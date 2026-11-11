@@ -3,6 +3,7 @@ package com.github.dionathanpassos.b3_wallet_api.domain.account;
 import com.github.dionathanpassos.b3_wallet_api.config.security.AuthenticatedUser;
 import com.github.dionathanpassos.b3_wallet_api.domain.account.dto.AccountRequestDTO;
 import com.github.dionathanpassos.b3_wallet_api.domain.account.dto.AccountResponseDTO;
+
 import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
 import com.github.dionathanpassos.b3_wallet_api.exception.BusinessException;
 import com.github.dionathanpassos.b3_wallet_api.exception.ConflictException;

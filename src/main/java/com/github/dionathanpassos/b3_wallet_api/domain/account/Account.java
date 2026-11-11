@@ -2,8 +2,6 @@ package com.github.dionathanpassos.b3_wallet_api.domain.account;
 
 import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -42,7 +40,7 @@ public class Account {
 
     private Account() {}
 
-    public static Account create(User user,String normalizedName, String description) {
+    public static Account create(User user, String normalizedName, String description) {
         Account account = new Account();
 
         account.user = user;

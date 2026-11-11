@@ -1,2 +1,2 @@
-ALTER TABLE tb_asset_quotes
-RENAME COLUMN `change` TO price_change;
+ALTER TABLE tb_accounts
+ADD COLUMN broker_id BIGINT;
