@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/transactions")
@@ -26,11 +28,17 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @GetMapping
     public ResponseEntity<Page<TransactionResponseDTO>> findAll(
             @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long accountId,
+            @RequestParam(required = false) Long assetId,
+            @RequestParam(required = false) TransactionType type,
+            @RequestParam(required = false) LocalDate startDate,
+            @RequestParam(required = false) LocalDate endDate,
             @PageableDefault(sort = "transactionDate", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        Page<TransactionResponseDTO> transactions = transactionService.findAll(search, pageable);
+        Page<TransactionResponseDTO> transactions = transactionService.findAll(search, accountId, assetId, type, startDate, endDate, pageable);
 
         return ResponseEntity.ok(transactions);
     }

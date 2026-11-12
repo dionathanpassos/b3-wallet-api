@@ -38,7 +38,7 @@ public class Account {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    private Account() {}
+    protected Account() {}
 
     public static Account create(User user, String normalizedName, String description) {
         Account account = new Account();

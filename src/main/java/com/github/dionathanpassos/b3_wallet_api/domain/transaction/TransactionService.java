@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Service
 @RequiredArgsConstructor
@@ -67,19 +68,26 @@ public class TransactionService {
         return transactionMapper.fromEntity(saved);
     }
 
-    private User getCurrentUser() {
-        return authenticatedUser.getAuthenticatedUser();
-    }
-
     @Transactional(readOnly = true)
     public Page<TransactionResponseDTO> findAll(
             String search,
+            Long accountId,
+            Long assetId,
+            TransactionType type,
+            LocalDate startDate,
+            LocalDate endDate,
             Pageable pageable
     ) {
         User user = getCurrentUser();
 
-        Page<Transaction> transactions = transactionRepository.findAllFiltered(search, user, pageable);
+        Page<Transaction> transactions = transactionRepository.findAllFiltered(search,accountId,assetId, type, startDate, endDate, user, pageable);
+
+        return transactions.map(transactionMapper::fromEntity);
 
 
+    }
+
+    private User getCurrentUser() {
+        return authenticatedUser.getAuthenticatedUser();
     }
 }

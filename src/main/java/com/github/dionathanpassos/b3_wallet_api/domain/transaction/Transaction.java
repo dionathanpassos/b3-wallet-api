@@ -52,7 +52,7 @@ public class Transaction {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    private Transaction() {}
+    protected Transaction() {}
 
     public static Transaction create(
             Account account,
