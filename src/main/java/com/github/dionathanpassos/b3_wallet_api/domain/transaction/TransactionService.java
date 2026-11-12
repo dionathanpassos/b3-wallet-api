@@ -14,6 +14,8 @@ import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
 import com.github.dionathanpassos.b3_wallet_api.exception.BusinessException;
 import com.github.dionathanpassos.b3_wallet_api.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,5 +69,17 @@ public class TransactionService {
 
     private User getCurrentUser() {
         return authenticatedUser.getAuthenticatedUser();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<TransactionResponseDTO> findAll(
+            String search,
+            Pageable pageable
+    ) {
+        User user = getCurrentUser();
+
+        Page<Transaction> transactions = transactionRepository.findAllFiltered(search, user, pageable);
+
+
     }
 }
