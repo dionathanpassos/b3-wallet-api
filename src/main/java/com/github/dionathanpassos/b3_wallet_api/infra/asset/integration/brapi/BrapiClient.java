@@ -5,7 +5,7 @@ import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dt
 import com.github.dionathanpassos.b3_wallet_api.exception.ApiUnavailableException;
 import com.github.dionathanpassos.b3_wallet_api.exception.BrapiIntegrationException;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class BrapiClient {
 
     @Value("${api.key.token.brapi}")
-    String token;
+private String token;
 
     private final RestClient brapiRestClient;
 
