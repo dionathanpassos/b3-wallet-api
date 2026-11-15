@@ -7,6 +7,7 @@ import com.github.dionathanpassos.b3_wallet_api.domain.transaction.Transaction;
 import com.github.dionathanpassos.b3_wallet_api.domain.transaction.TransactionType;
 import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
 import com.github.dionathanpassos.b3_wallet_api.exception.BusinessException;
+import com.github.dionathanpassos.b3_wallet_api.exception.ResourceNotFoundException;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.AssetCatalogProvider;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.ExternalAssetQuoteDTO;
 import jakarta.persistence.Entity;
@@ -77,11 +78,24 @@ public class PositionService {
         accountAssetRepository.save(position);
     }
 
+    public void recalculatePosition(List<Transaction> transactions, Account account, Asset asset, User user) {
+
+        AccountAsset position = accountAssetRepository.findByAccountAndAssetAndAccountUserId(account, asset, user.getId())
+                .orElseGet(() -> AccountAsset.create(account, asset));
+
+        for (Transaction transaction : transactions) {
+            position.applyPosition(
+                    transaction.getType(),
+                    transaction.getQuantity(),
+                    transaction.getTotalAmount()
+            );
+        }
+
+        accountAssetRepository.save(position);
+    }
 
     private User getCurrentUser() {
         return authenticatedUser.getAuthenticatedUser();
     }
-
-
 
 }

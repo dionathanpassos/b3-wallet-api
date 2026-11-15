@@ -106,14 +106,20 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findByIdAndAccountUser(id, user)
                 .orElseThrow(() -> new ResourceNotFoundException("Transação não encontrada"));
 
-        List<Transaction> transactions = transactionRepository.findAllByAccountUserAndAssetAndIdNotOrderByTransactionDateAsc(
+        List<Transaction> transactions = transactionRepository.findAllByAccountUserAndAssetAndAccountAndIdNotOrderByTransactionDateAscIdAsc(
                 user,
                 transaction.getAsset(),
+                transaction.getAccount(),
                 transaction.getId()
         );
 
         try {
-            recalculate(transactions);
+            positionService.recalculatePosition(
+                    transactions,
+                    transaction.getAccount(),
+                    transaction.getAsset(),
+                    user
+            );
         } catch (BusinessException ex) {
             throw new BusinessException("Esta transação não pode ser removida porque existem operações mais recentes vinculadas a este ativo. Exclua as transações mais novas primeiro.");
         }
@@ -121,24 +127,6 @@ public class TransactionService {
         transactionRepository.delete(transaction);
     }
 
-    @Transactional
-    private void recalculate(List<Transaction> transactions) {
-        User user = getCurrentUser();
-
-        AccountAsset position = accountAssetRepository.findByAccountAndAssetAndAccountUserId(
-                transactions.getFirst().getAccount(),
-                transactions.getFirst().getAsset(),
-                user.getId()
-        ).orElseThrow(() ->
-                new BusinessException("Não existe posição deste ativo nesta carteira")
-        );
-
-        position.resetPosition();
-
-        for (Transaction transaction : transactions) {
-            positionService.processTransaction(transaction);
-        }
-    }
 
     private User getCurrentUser() {
         return authenticatedUser.getAuthenticatedUser();

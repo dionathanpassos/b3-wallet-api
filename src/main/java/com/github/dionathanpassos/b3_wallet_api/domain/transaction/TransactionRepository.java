@@ -1,5 +1,6 @@
 package com.github.dionathanpassos.b3_wallet_api.domain.transaction;
 
+import com.github.dionathanpassos.b3_wallet_api.domain.account.Account;
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
 import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
 import org.springframework.data.domain.Page;
@@ -35,5 +36,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     Optional<Transaction> findByIdAndAccountUser(Long id, User user);
 
-    List<Transaction> findAllByAccountUserAndAssetAndIdNotOrderByTransactionDateAsc(User user, Asset asset, Long id);
+    List<Transaction> findAllByAccountUserAndAssetAndAccountAndIdNotOrderByTransactionDateAscIdAsc(User user, Asset asset, Account account, Long id);
 }
