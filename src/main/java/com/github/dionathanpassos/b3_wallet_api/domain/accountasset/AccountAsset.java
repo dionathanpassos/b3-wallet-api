@@ -47,7 +47,7 @@ public class AccountAsset {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    private AccountAsset() {}
+    protected AccountAsset() {}
 
     public static AccountAsset create(Account account, Asset asset) {
         AccountAsset accountAsset = new AccountAsset();
@@ -94,7 +94,6 @@ public class AccountAsset {
         }
 
         Long newQuantity = this.quantity - quantity;
-        System.out.println(newQuantity);
         BigDecimal newTotalInvested = this.totalInvested.subtract(this.averagePrice.multiply(BigDecimal.valueOf(quantity)));
 
         this.quantity = newQuantity;

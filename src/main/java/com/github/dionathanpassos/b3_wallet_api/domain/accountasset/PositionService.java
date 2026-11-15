@@ -83,6 +83,8 @@ public class PositionService {
         AccountAsset position = accountAssetRepository.findByAccountAndAssetAndAccountUserId(account, asset, user.getId())
                 .orElseGet(() -> AccountAsset.create(account, asset));
 
+        position.resetPosition();
+
         for (Transaction transaction : transactions) {
             position.applyPosition(
                     transaction.getType(),
