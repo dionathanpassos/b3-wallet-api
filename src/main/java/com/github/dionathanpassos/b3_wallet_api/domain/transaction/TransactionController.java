@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +29,13 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TransactionResponseDTO> findById(@PathVariable Long id) {
+        TransactionResponseDTO transaction = transactionService.findById(id);
+
+        return ResponseEntity.ok(transaction);
+    }
+
     @GetMapping
     public ResponseEntity<Page<TransactionResponseDTO>> findAll(
             @RequestParam(required = false) String search,
@@ -41,5 +49,12 @@ public class TransactionController {
         Page<TransactionResponseDTO> transactions = transactionService.findAll(search, accountId, assetId, type, startDate, endDate, pageable);
 
         return ResponseEntity.ok(transactions);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        transactionService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

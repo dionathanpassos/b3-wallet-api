@@ -4,6 +4,8 @@ import com.github.dionathanpassos.b3_wallet_api.config.security.AuthenticatedUse
 import com.github.dionathanpassos.b3_wallet_api.domain.account.Account;
 import com.github.dionathanpassos.b3_wallet_api.domain.account.AccountRepository;
 import com.github.dionathanpassos.b3_wallet_api.domain.account.AccountStatus;
+import com.github.dionathanpassos.b3_wallet_api.domain.accountasset.AccountAsset;
+import com.github.dionathanpassos.b3_wallet_api.domain.accountasset.AccountAssetRepository;
 import com.github.dionathanpassos.b3_wallet_api.domain.accountasset.PositionService;
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
 import com.github.dionathanpassos.b3_wallet_api.domain.asset.AssetRepository;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class TransactionService {
     private final AuthenticatedUser authenticatedUser;
     private final TransactionMapper transactionMapper;
     private final PositionService positionService;
+    private final AccountAssetRepository accountAssetRepository;
 
     private final AssetQuoteService assetQuoteService;
 
@@ -83,8 +87,57 @@ public class TransactionService {
         Page<Transaction> transactions = transactionRepository.findAllFiltered(search,accountId,assetId, type, startDate, endDate, user, pageable);
 
         return transactions.map(transactionMapper::fromEntity);
+    }
 
+    @Transactional(readOnly = true)
+    public TransactionResponseDTO findById(Long id) {
+        User user = getCurrentUser();
 
+        Transaction transaction = transactionRepository.findByIdAndAccountUser(id, user)
+                .orElseThrow(() -> new ResourceNotFoundException("Transação não encontrada"));
+
+        return transactionMapper.fromEntity(transaction);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        User user = getCurrentUser();
+
+        Transaction transaction = transactionRepository.findByIdAndAccountUser(id, user)
+                .orElseThrow(() -> new ResourceNotFoundException("Transação não encontrada"));
+
+        List<Transaction> transactions = transactionRepository.findAllByAccountUserAndAssetAndIdNotOrderByTransactionDateAsc(
+                user,
+                transaction.getAsset(),
+                transaction.getId()
+        );
+
+        try {
+            recalculate(transactions);
+        } catch (BusinessException ex) {
+            throw new BusinessException("Esta transação não pode ser removida porque existem operações mais recentes vinculadas a este ativo. Exclua as transações mais novas primeiro.");
+        }
+
+        transactionRepository.delete(transaction);
+    }
+
+    @Transactional
+    private void recalculate(List<Transaction> transactions) {
+        User user = getCurrentUser();
+
+        AccountAsset position = accountAssetRepository.findByAccountAndAssetAndAccountUserId(
+                transactions.getFirst().getAccount(),
+                transactions.getFirst().getAsset(),
+                user.getId()
+        ).orElseThrow(() ->
+                new BusinessException("Não existe posição deste ativo nesta carteira")
+        );
+
+        position.resetPosition();
+
+        for (Transaction transaction : transactions) {
+            positionService.processTransaction(transaction);
+        }
     }
 
     private User getCurrentUser() {

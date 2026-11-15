@@ -94,6 +94,7 @@ public class AccountAsset {
         }
 
         Long newQuantity = this.quantity - quantity;
+        System.out.println(newQuantity);
         BigDecimal newTotalInvested = this.totalInvested.subtract(this.averagePrice.multiply(BigDecimal.valueOf(quantity)));
 
         this.quantity = newQuantity;
@@ -107,4 +108,21 @@ public class AccountAsset {
     }
 
 
+    public void restoreSale(
+            BigDecimal totalAmount,
+            Long quantity
+    ) {
+        Long newQuantity = this.quantity + quantity;
+        BigDecimal newTotalInvested = this.totalInvested.subtract(this.averagePrice.multiply(BigDecimal.valueOf(quantity)));
+
+        this.quantity = newQuantity;
+        this.totalInvested = newTotalInvested;
+    }
+
+    public void resetPosition() {
+        this.quantity = 0L;
+        this.totalInvested = BigDecimal.ZERO;
+        this.averagePrice = BigDecimal.ZERO;
+
+    }
 }

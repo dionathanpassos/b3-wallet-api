@@ -1,5 +1,6 @@
 package com.github.dionathanpassos.b3_wallet_api.domain.transaction;
 
+import com.github.dionathanpassos.b3_wallet_api.domain.asset.Asset;
 import com.github.dionathanpassos.b3_wallet_api.domain.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
@@ -29,4 +32,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             @Param("user") User user,
             Pageable pageable
     );
+
+    Optional<Transaction> findByIdAndAccountUser(Long id, User user);
+
+    List<Transaction> findAllByAccountUserAndAssetAndIdNotOrderByTransactionDateAsc(User user, Asset asset, Long id);
 }
