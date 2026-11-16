@@ -78,6 +78,7 @@ public class PositionService {
         accountAssetRepository.save(position);
     }
 
+    @Transactional
     public void recalculatePosition(List<Transaction> transactions, Account account, Asset asset, User user) {
 
         AccountAsset position = accountAssetRepository.findByAccountAndAssetAndAccountUserId(account, asset, user.getId())
