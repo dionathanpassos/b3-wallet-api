@@ -1,5 +1,6 @@
 package com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi;
 
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetQuoteHistoryResponseDTO;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetQuoteResponseDTO;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetResponseDTO;
 import com.github.dionathanpassos.b3_wallet_api.exception.ApiUnavailableException;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Optional;
 
 @Component
@@ -19,7 +22,7 @@ import java.util.Optional;
 public class BrapiClient {
 
     @Value("${api.key.token.brapi}")
-private String token;
+    private String token;
 
     private final RestClient brapiRestClient;
 
@@ -65,6 +68,25 @@ private String token;
         } catch (ResourceAccessException e) {
             throw new ApiUnavailableException("Servidor temporariamente fora do ar");
         }
+    }
+
+    public Optional<BrapiAssetQuoteHistoryResponseDTO> getHistoryQuoteByTicker(String ticker) {
+        LocalDate startDate = LocalDate.now().minusDays(85);
+
+        BrapiAssetQuoteHistoryResponseDTO response = brapiRestClient.get()
+                .uri("https://brapi.dev/api/v2/stocks/historical?symbols={ticker}&startDate={startDate}", ticker, startDate)
+                .header("Authorization", "Bearer " + token)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, (req, res) -> {
+                    throw new BrapiIntegrationException("Erro na API Brapi. Status: " + res.getStatusCode());
+                })
+                .body(BrapiAssetQuoteHistoryResponseDTO.class);
+
+        if(response != null && response.results() != null && !response.results().isEmpty()) {
+            return Optional.of(response);
+        }
+        return Optional.empty();
     }
 
 

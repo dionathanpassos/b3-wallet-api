@@ -4,12 +4,18 @@ import com.github.dionathanpassos.b3_wallet_api.domain.asset.AssetType;
 import com.github.dionathanpassos.b3_wallet_api.exception.BusinessException;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.AssetCatalogProvider;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.ExternalAssetQuoteDTO;
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.ExternalAssetQuoteHistoryDTO;
+import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetQuoteHistoryResponseDTO;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetQuoteResponseDTO;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.brapi.dto.BrapiAssetResponseDTO;
 import com.github.dionathanpassos.b3_wallet_api.infra.asset.integration.ExternalAssetDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -80,6 +86,25 @@ public class BrapiAssetCatalogImpl implements AssetCatalogProvider {
         } while (currentPage <= totalPages);
 
         return allTickers;
+
+    }
+
+    @Override
+    public List<ExternalAssetQuoteHistoryDTO> findHistoryQuoteByTicker(String ticker) {
+        BrapiAssetQuoteHistoryResponseDTO response = brapiClient.getHistoryQuoteByTicker(ticker)
+                .orElseThrow(() -> new BusinessException("Não foi possível obter a cotação do ativo"));
+
+        return response.results().stream()
+                .flatMap(result -> result.data()
+                        .historicalDataPrice()
+                        .stream()
+                        .map(price -> new ExternalAssetQuoteHistoryDTO(
+                                result.symbol(),
+                                Instant.ofEpochSecond(price.date())
+                                        .atZone(ZoneId.of("America/Sao_Paulo"))
+                                        .toLocalDate(),
+                                price.close()
+                        ))).toList();
 
     }
 

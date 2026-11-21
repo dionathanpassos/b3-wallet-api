@@ -9,4 +9,6 @@ public interface AssetCatalogProvider {
 
     List<ExternalAssetDTO> findAllTickers();
 
+    List<ExternalAssetQuoteHistoryDTO> findHistoryQuoteByTicker(String ticker);
+
 }
